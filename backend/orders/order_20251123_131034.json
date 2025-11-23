@@ -1,0 +1,11 @@
+{
+    "drinkType": "espresso",
+    "size": "medium",
+    "milk": "coconut",
+    "extras": [
+        "cinnamon"
+    ],
+    "name": "Vicky",
+    "timestamp": "2025-11-23T13:10:34.387363",
+    "session_id": "20251123_131034"
+}
