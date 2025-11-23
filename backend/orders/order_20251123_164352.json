@@ -1,0 +1,11 @@
+{
+    "drinkType": "cappuccino",
+    "size": "medium",
+    "milk": "almond",
+    "extras": [
+        "sugar"
+    ],
+    "name": "Arpit",
+    "timestamp": "2025-11-23T16:43:52.126930",
+    "session_id": "20251123_164352"
+}
