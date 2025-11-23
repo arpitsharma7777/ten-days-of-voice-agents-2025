@@ -156,8 +156,26 @@ async def complete_order(ctx: RunContext[Userdata]):
         if not order.name: missing.append("name")
         return f"I still need: {', '.join(missing)}."
 
+    # 1) Save order to JSON file (Day 2 primary requirement)
     save_order_to_json(order)
+
+    # 2) Send order state to frontend via LiveKit data packets
+    try:
+        room = ctx.session.room  # RunContext se session, phir room
+        payload = {
+            "type": "order_state",
+            "order": order.to_dict(),
+        }
+        await room.local_participant.publish_data(
+            json.dumps(payload).encode("utf-8"),
+            topic="order_state",
+        )
+    except Exception as e:
+        logger.exception(f"Failed to publish order_state: {e}")
+
+    # 3) Normal voice reply
     return f"Your order is complete: {order.get_summary()}. We’ll start preparing it now!"
+
 
 
 # ======================================================

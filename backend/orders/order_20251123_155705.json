@@ -1,0 +1,11 @@
+{
+    "drinkType": "cappuccino",
+    "size": "small",
+    "milk": "coconut",
+    "extras": [
+        "sugar"
+    ],
+    "name": "Vicky",
+    "timestamp": "2025-11-23T15:57:05.546152",
+    "session_id": "20251123_155705"
+}

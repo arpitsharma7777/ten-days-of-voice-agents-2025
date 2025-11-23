@@ -15,29 +15,20 @@ import { useConnectionTimeout } from '@/hooks/useConnectionTimout';
 import { useDebugMode } from '@/hooks/useDebug';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../livekit/scroll-area/scroll-area';
+import { OrderVisualizer } from "./order-visualizer";
 
 const MotionBottom = motion.create('div');
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== 'production';
 const BOTTOM_VIEW_MOTION_PROPS = {
   variants: {
-    visible: {
-      opacity: 1,
-      translateY: '0%',
-    },
-    hidden: {
-      opacity: 0,
-      translateY: '100%',
-    },
+    visible: { opacity: 1, translateY: '0%' },
+    hidden: { opacity: 0, translateY: '100%' },
   },
   initial: 'hidden',
   animate: 'visible',
   exit: 'hidden',
-  transition: {
-    duration: 0.3,
-    delay: 0.5,
-    ease: 'easeOut',
-  },
+  transition: { duration: 0.3, delay: 0.5, ease: [0.22, 1, 0.36, 1] as unknown as any },
 };
 
 interface FadeProps {
@@ -58,6 +49,7 @@ export function Fade({ top = false, bottom = false, className }: FadeProps) {
     />
   );
 }
+
 interface SessionViewProps {
   appConfig: AppConfig;
 }
@@ -86,12 +78,16 @@ export const SessionView = ({
     const lastMessageIsLocal = lastMessage?.from?.isLocal === true;
 
     if (scrollAreaRef.current && lastMessageIsLocal) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      scrollAreaRef.current.scrollTop =
+        scrollAreaRef.current.scrollHeight;
     }
   }, [messages]);
 
   return (
-    <section className="bg-background relative z-10 h-full w-full overflow-hidden" {...props}>
+    <section
+      className="bg-background relative z-10 h-full w-full overflow-hidden"
+      {...props}
+    >
       {/* Chat Transcript */}
       <div
         className={cn(
@@ -100,7 +96,10 @@ export const SessionView = ({
         )}
       >
         <Fade top className="absolute inset-x-4 top-0 h-40" />
-        <ScrollArea ref={scrollAreaRef} className="px-4 pt-40 pb-[150px] md:px-6 md:pb-[180px]">
+        <ScrollArea
+          ref={scrollAreaRef}
+          className="px-4 pt-40 pb-[150px] md:px-6 md:pb-[180px]"
+        >
           <ChatTranscript
             hidden={!chatOpen}
             messages={messages}
@@ -112,6 +111,11 @@ export const SessionView = ({
       {/* Tile Layout */}
       <TileLayout chatOpen={chatOpen} />
 
+      {/* Order Visualizer */}
+      <div className="mt-4 px-4 md:px-6">
+        <OrderVisualizer />
+      </div>
+
       {/* Bottom */}
       <MotionBottom
         {...BOTTOM_VIEW_MOTION_PROPS}
@@ -122,7 +126,10 @@ export const SessionView = ({
         )}
         <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
           <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" />
-          <AgentControlBar controls={controls} onChatOpenChange={setChatOpen} />
+          <AgentControlBar
+            controls={controls}
+            onChatOpenChange={setChatOpen}
+          />
         </div>
       </MotionBottom>
     </section>
