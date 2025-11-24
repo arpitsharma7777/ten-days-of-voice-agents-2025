@@ -1,0 +1,46 @@
+[
+    {
+        "timestamp": "2025-11-23T22:42:58.505352",
+        "mood": "sad",
+        "energy": "too high",
+        "stress": "heart is broken",
+        "goals": [
+            "Go and check up my blood group."
+        ],
+        "summary": "Today you are feeling sad, energy is too high, stress from heart is broken, and your goals are Go and check up my blood group.."
+    },
+    {
+        "timestamp": "2025-11-23T23:52:26.411342",
+        "mood": "confused",
+        "energy": "low",
+        "stress": "nothing much",
+        "goals": [
+            "Read for thirty minutes",
+            "Practice coding"
+        ],
+        "summary": "Today you are feeling confused, energy is low, stress from nothing much, and your goals are Read for thirty minutes, Practice coding."
+    },
+    {
+        "timestamp": "2025-11-24T11:08:03.151692",
+        "mood": "okay, but not great",
+        "energy": "high",
+        "stress": "nothing much",
+        "goals": [
+            "Complete homework",
+            "Tidy my room",
+            "Go for a walk"
+        ],
+        "summary": "Today you are feeling okay, but not great, energy is high, stress from nothing much, and your goals are Complete homework, Tidy my room, Go for a walk."
+    },
+    {
+        "timestamp": "2025-11-24T11:14:54.613052",
+        "mood": "sad",
+        "energy": "one",
+        "stress": "My mind is too heavy today.",
+        "goals": [
+            "rest",
+            "drink enough water"
+        ],
+        "summary": "Today you are feeling sad, energy is one, stress from My mind is too heavy today., and your goals are rest, drink enough water."
+    }
+]

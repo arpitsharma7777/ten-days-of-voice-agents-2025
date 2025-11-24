@@ -2,7 +2,7 @@ import logging
 import json
 import os
 from datetime import datetime
-from typing import Annotated, Literal
+from typing import Annotated
 from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
@@ -13,9 +13,9 @@ from livekit.agents import (
     AgentSession,
     JobContext,
     JobProcess,
+    RunContext,
     RoomInputOptions,
     WorkerOptions,
-    RunContext,
     function_tool,
     cli,
     metrics,
@@ -25,257 +25,161 @@ from livekit.agents import (
 from livekit.plugins import murf, silero, google, deepgram, noise_cancellation
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
-# Load environment variables
 load_dotenv(".env.local")
-logger = logging.getLogger("agent")
-
+logger = logging.getLogger("wellness")
 
 # ======================================================
-# ORDER STATE
+#   Wellness State
 # ======================================================
+
 @dataclass
-class OrderState:
-    drinkType: str | None = None
-    size: str | None = None
-    milk: str | None = None
-    extras: list[str] = field(default_factory=list)
-    name: str | None = None
-
-    def is_complete(self):
-        return all([
-            self.drinkType,
-            self.size,
-            self.milk,
-            self.extras is not None,
-            self.name
-        ])
-
-    def to_dict(self):
-        return {
-            "drinkType": self.drinkType,
-            "size": self.size,
-            "milk": self.milk,
-            "extras": self.extras,
-            "name": self.name
-        }
-
-    def get_summary(self):
-        if not self.is_complete():
-            return "Order is still in progress."
-        extras_text = ", ".join(self.extras) if self.extras else "no extras"
-        return f"{self.size.title()} {self.drinkType.title()} with {self.milk.title()} milk and {extras_text} for {self.name}"
-
+class WellnessState:
+    mood: str | None = None
+    energy: str | None = None
+    stress: str | None = None
+    goals: list[str] = field(default_factory=list)
+    summary: str | None = None
 
 @dataclass
 class Userdata:
-    order: OrderState
+    wellness: WellnessState
     session_start: datetime = field(default_factory=datetime.now)
 
+WELLNESS_FOLDER = os.path.join(os.path.dirname(__file__), "..", "wellness")
+os.makedirs(WELLNESS_FOLDER, exist_ok=True)
+
+LOG_FILE = os.path.join(WELLNESS_FOLDER, "wellness_log.json")
 
 # ======================================================
-# FUNCTION TOOLS
+#   JSON Read & Write
 # ======================================================
 
-@function_tool
-async def set_drink_type(
-    ctx: RunContext[Userdata],
-    drink: Annotated[
-        Literal["latte", "cappuccino", "americano", "espresso", "mocha", "coffee", "cold brew", "matcha"],
-        Field(description="Type of drink the user wants.")
-    ],
-):
-    ctx.userdata.order.drinkType = drink
-    return f"Great, one {drink} coming right up!"
-
-
-@function_tool
-async def set_size(
-    ctx: RunContext[Userdata],
-    size: Annotated[
-        Literal["small", "medium", "large", "extra large"],
-        Field(description="Size of the drink.")
-    ],
-):
-    ctx.userdata.order.size = size
-    return f"{size.title()} size noted."
-
-
-@function_tool
-async def set_milk(
-    ctx: RunContext[Userdata],
-    milk: Annotated[
-        Literal["whole", "skim", "almond", "oat", "soy", "coconut", "none"],
-        Field(description="Milk preference.")
-    ],
-):
-    ctx.userdata.order.milk = milk
-    if milk == "none":
-        return "Going with no milk. Got it!"
-    return f"{milk.title()} milk added."
-
-
-@function_tool
-async def set_extras(
-    ctx: RunContext[Userdata],
-    extras: Annotated[
-        list[Literal["sugar", "whipped cream", "caramel", "extra shot", "vanilla", "cinnamon", "honey"]] | None,
-        Field(description="Extra add-ons.")
-    ] = None,
-):
-    ctx.userdata.order.extras = extras if extras else []
-    if extras:
-        return f"Added: {', '.join(extras)}."
-    return "No extras added."
-
-
-@function_tool
-async def set_name(
-    ctx: RunContext[Userdata],
-    name: Annotated[str, Field(description="Customer name for the order.")],
-):
-    ctx.userdata.order.name = name.strip().title()
-    return f"Thanks, {ctx.userdata.order.name}! Almost done."
-
-
-@function_tool
-async def cancel_order(ctx: RunContext[Userdata]):
-    """Cancel the current order and reset the order state."""
-    ctx.userdata.order = OrderState()  # Reset order
-    return "Your order has been canceled. If you'd like to start a new one, just tell me what you'd like to drink."
-
-
-@function_tool
-async def complete_order(ctx: RunContext[Userdata]):
-    order = ctx.userdata.order
-    if not order.is_complete():
-        missing = []
-        if not order.drinkType: missing.append("drink type")
-        if not order.size: missing.append("size")
-        if not order.milk: missing.append("milk")
-        if order.extras is None: missing.append("extras")
-        if not order.name: missing.append("name")
-        return f"I still need: {', '.join(missing)}."
-
-    # 1) Save order to JSON file (Day 2 primary requirement)
-    save_order_to_json(order)
-
-    # 2) Send order state to frontend via LiveKit data packets
+def load_previous_entries():
+    if not os.path.exists(LOG_FILE):
+        return []
     try:
-        room = ctx.session.room  # RunContext se session, phir room
-        payload = {
-            "type": "order_state",
-            "order": order.to_dict(),
-        }
-        await room.local_participant.publish_data(
-            json.dumps(payload).encode("utf-8"),
-            topic="order_state",
-        )
-    except Exception as e:
-        logger.exception(f"Failed to publish order_state: {e}")
+        with open(LOG_FILE, "r") as f:
+            return json.load(f)
+    except:
+        return []
 
-    # 3) Normal voice reply
-    return f"Your order is complete: {order.get_summary()}. We’ll start preparing it now!"
-
-
-
-# ======================================================
-# ORDER SAVE HANDLER
-# ======================================================
-def get_orders_folder():
-    base_dir = os.path.dirname(__file__)
-    backend_dir = os.path.abspath(os.path.join(base_dir, ".."))
-    folder = os.path.join(backend_dir, "orders")
-    os.makedirs(folder, exist_ok=True)
-    return folder
-
-
-def save_order_to_json(order: OrderState):
-    folder = get_orders_folder()
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    path = os.path.join(folder, f"order_{timestamp}.json")
-
-    data = order.to_dict()
-    data["timestamp"] = datetime.now().isoformat()
-    data["session_id"] = timestamp
-
-    with open(path, "w") as f:
+def save_entry(entry: dict):
+    data = load_previous_entries()
+    data.append(entry)
+    with open(LOG_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
-    print(f"[ORDER SAVED] {path}")
+# ======================================================
+#   LLM Tools
+# ======================================================
 
+@function_tool
+async def set_mood(ctx: RunContext[Userdata], mood: Annotated[str, Field(description="User's emotional mood")] ):
+    ctx.userdata.wellness.mood = mood
+    return f"Thanks for sharing. I understand you're feeling {mood}."
+
+@function_tool
+async def set_energy(ctx: RunContext[Userdata], energy: Annotated[str, Field(description="Energy level today")] ):
+    ctx.userdata.wellness.energy = energy
+    return f"Got it. Your energy level is {energy}."
+
+@function_tool
+async def set_stress(ctx: RunContext[Userdata], stress: Annotated[str, Field(description="Stress or worries today")] ):
+    ctx.userdata.wellness.stress = stress
+    return "Thanks for being honest about what's stressing you."
+
+@function_tool
+async def set_goals(ctx: RunContext[Userdata], 
+    goals: Annotated[list[str], Field(description="1-3 simple goals for today")]):
+    ctx.userdata.wellness.goals = goals
+    return f"Noted your goals: {', '.join(goals)}."
+
+@function_tool
+async def complete_checkin(ctx: RunContext[Userdata]):
+    w = ctx.userdata.wellness
+
+    if not (w.mood and w.energy and w.stress and w.goals):
+        return "We still haven't covered everything. Please continue."
+
+    summary = f"Today you are feeling {w.mood}, energy is {w.energy}, stress from {w.stress}, and your goals are {', '.join(w.goals)}."
+    w.summary = summary
+
+    entry = {
+        "timestamp": datetime.now().isoformat(),
+        "mood": w.mood,
+        "energy": w.energy,
+        "stress": w.stress,
+        "goals": w.goals,
+        "summary": w.summary
+    }
+
+    save_entry(entry)
+    return f"Your check-in is saved. Summary: {summary}"
+
+@function_tool
+async def read_past(ctx: RunContext[Userdata]):
+    data = load_previous_entries()
+    if not data:
+        return "This seems like our first check-in together."
+
+    last = data[-1]
+    return f"Last time you said your mood was {last['mood']} and your energy was {last['energy']}. How does today compare?"
 
 # ======================================================
-# BARISTA AGENT
+#   Agent Instructions
 # ======================================================
-class BaristaAgent(Agent):
+
+class WellnessAgent(Agent):
     def __init__(self):
         super().__init__(
             instructions="""
-You are a friendly coffee shop barista.
+You are a supportive Health & Wellness Voice Companion.
 
-Guide the customer through the order step-by-step:
-1. Ask for drink type.
-2. Ask for size.
-3. Ask for milk.
-4. Ask for extras.
-5. Ask for their name.
+Do not provide medical advice.
+Do not diagnose conditions.
 
-If the customer wants to cancel the order, call the cancel_order tool.
+Each session, follow this structure:
+1. Ask how the user feels today (mood).
+2. Ask about energy levels.
+3. Ask if anything is stressing them.
+4. Ask for 1–3 simple goals for today.
+5. Offer small, grounded suggestions (like taking a break or breaking tasks into smaller pieces).
+6. Recap the full day and confirm.
+7. Save the check-in using complete_checkin.
 
-When all details are collected, call complete_order.
+If user asks about past progress, call read_past.
 """,
-            tools=[
-                set_drink_type,
-                set_size,
-                set_milk,
-                set_extras,
-                set_name,
-                complete_order,
-                cancel_order,
-            ],
+            tools=[set_mood, set_energy, set_stress, set_goals, complete_checkin, read_past],
         )
 
+# ======================================================
+#   Session
+# ======================================================
 
-# ======================================================
-# SESSION MANAGEMENT
-# ======================================================
 def prewarm(proc: JobProcess):
     proc.userdata["vad"] = silero.VAD.load()
 
-
 async def entrypoint(ctx: JobContext):
-    userdata = Userdata(order=OrderState())
+    userdata = Userdata(wellness=WellnessState())
 
     session = AgentSession(
         stt=deepgram.STT(model="nova-3"),
         llm=google.LLM(model="gemini-2.5-flash"),
-        tts=murf.TTS(
-            voice="en-US-matthew",
-            style="Conversation",
-            text_pacing=True,
-        ),
+        tts=murf.TTS(voice="en-US-matthew", style="Conversation", text_pacing=True),
         turn_detection=MultilingualModel(),
         vad=ctx.proc.userdata["vad"],
-        userdata=userdata,
+        userdata=userdata
     )
 
-    usage_collector = metrics.UsageCollector()
-
-    @session.on("metrics_collected")
-    def _metrics(ev: MetricsCollectedEvent):
-        usage_collector.collect(ev.metrics)
-
     await session.start(
-        agent=BaristaAgent(),
+        agent=WellnessAgent(),
         room=ctx.room,
-        room_input_options=RoomInputOptions(noise_cancellation=noise_cancellation.BVC()),
+        room_input_options=RoomInputOptions(
+            noise_cancellation=noise_cancellation.BVC()
+        ),
     )
 
     await ctx.connect()
 
-
-# ======================================================
-# BOOTSTRAP
-# ======================================================
 if __name__ == "__main__":
     cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint, prewarm_fnc=prewarm))

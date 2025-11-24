@@ -15,7 +15,8 @@ import { useConnectionTimeout } from '@/hooks/useConnectionTimout';
 import { useDebugMode } from '@/hooks/useDebug';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../livekit/scroll-area/scroll-area';
-import { OrderVisualizer } from "./order-visualizer";
+import { WellnessVisualizer } from "@/components/app/wellness-visualizer";
+
 
 const MotionBottom = motion.create('div');
 
@@ -111,10 +112,11 @@ export const SessionView = ({
       {/* Tile Layout */}
       <TileLayout chatOpen={chatOpen} />
 
-      {/* Order Visualizer */}
-      <div className="mt-4 px-4 md:px-6">
-        <OrderVisualizer />
-      </div>
+      {/* Wellness Visualizer */}
+<div className="ml-4 mt-4 w-100 flex justify-center">
+  <WellnessVisualizer />
+</div>
+
 
       {/* Bottom */}
       <MotionBottom
