@@ -1,0 +1,14 @@
+{
+    "loops": {
+        "learn": 0,
+        "quiz": 1,
+        "teach_back": 0,
+        "last_updated": "2025-11-25T18:15:00.388161"
+    },
+    "variables": {
+        "learn": 1,
+        "quiz": 0,
+        "teach_back": 0,
+        "last_updated": "2025-11-25T18:18:56.538433"
+    }
+}

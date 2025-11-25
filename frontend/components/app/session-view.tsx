@@ -16,6 +16,8 @@ import { useDebugMode } from '@/hooks/useDebug';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../livekit/scroll-area/scroll-area';
 import { WellnessVisualizer } from "@/components/app/wellness-visualizer";
+import { TutorProgress } from "@/components/app/tutor-progress";
+
 
 
 const MotionBottom = motion.create('div');
@@ -112,10 +114,11 @@ export const SessionView = ({
       {/* Tile Layout */}
       <TileLayout chatOpen={chatOpen} />
 
-      {/* Wellness Visualizer */}
-<div className="ml-4 mt-4 w-100 flex justify-center">
-  <WellnessVisualizer />
-</div>
+      {/* Tutor Progress for Day 4 */}
+      <div className="ml-4 mt-4 w-100 flex justify-center">
+        <TutorProgress />
+      </div>
+
 
 
       {/* Bottom */}

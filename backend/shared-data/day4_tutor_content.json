@@ -1,0 +1,20 @@
+[
+  {
+    "id": "neural_networks",
+    "title": "Neural Networks",
+    "summary": "Neural networks are computational models inspired by the human brain. They learn patterns from data by adjusting weights during training. A neural network is made of layers—input, hidden, and output—where each neuron processes information and passes it forward. They are commonly used for tasks like image recognition, language processing, and recommendation systems.",
+    "sample_question": "In simple terms, what is a neural network and how does it learn patterns from data?"
+  },
+  {
+    "id": "machine_learning_types",
+    "title": "Types of Machine Learning",
+    "summary": "Machine learning has three major types: supervised learning (learning from labeled examples), unsupervised learning (finding hidden patterns in unlabeled data), and reinforcement learning (learning through trial, error, and rewards). Each type is suited to different real-world problems and datasets.",
+    "sample_question": "Explain the difference between supervised, unsupervised, and reinforcement learning with a simple example for each."
+  },
+  {
+    "id": "embeddings",
+    "title": "Embeddings",
+    "summary": "Embeddings are numerical vector representations of words, images, or other data so that similar things end up close together in vector space. They help AI understand relationships—for example, 'king' and 'queen' will be closer to each other than to 'car'. Embeddings are essential for search, recommendations, text similarity, and LLM reasoning.",
+    "sample_question": "What are embeddings, and why do AI systems use them instead of raw text or images?"
+  }
+]
