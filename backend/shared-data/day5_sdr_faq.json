@@ -1,0 +1,32 @@
+[
+  {
+    "id": "what_is_product",
+    "question": "What does BharatStack Cloud do?",
+    "answer": "BharatStack Cloud is a simple developer-first cloud platform for hosting APIs, web apps and background workers. Aap GitHub se direct deploy kar sakte hain, auto SSL, logs and metrics ke saath.",
+    "tags": ["product", "features", "what do you do"]
+  },
+  {
+    "id": "who_is_it_for",
+    "question": "Who is this for?",
+    "answer": "BharatStack Cloud mainly early-stage startups, indie developers aur small engineering teams ke liye bana hai jo infra manage nahi karna chahte. Aapko servers, load balancers ya Kubernetes ka tension nahi lena padta.",
+    "tags": ["who is this for", "target", "startups", "developers"]
+  },
+  {
+    "id": "pricing",
+    "question": "How does pricing work?",
+    "answer": "Pricing simple usage-based model hai – aap per-app base fee + compute hours + bandwidth ke hisaab se pay karte hain. Ek free developer tier bhi hai jo small hobby projects ke liye kaafi hota hai.",
+    "tags": ["pricing", "cost", "free tier", "plans"]
+  },
+  {
+    "id": "free_tier",
+    "question": "Do you have a free tier?",
+    "answer": "Haan, ek free developer tier hai jisme limited compute hours, 1 small database aur basic monitoring included hai – perfect for testing and small side projects.",
+    "tags": ["free", "trial", "developer", "tier"]
+  },
+  {
+    "id": "support",
+    "question": "What kind of support do you offer?",
+    "answer": "Email support sabhi paid plans ke saath aata hai. Growth aur Startup plans ke liye hum Slack-based support aur onboarding help provide karte hain.",
+    "tags": ["support", "help", "onboarding"]
+  }
+]

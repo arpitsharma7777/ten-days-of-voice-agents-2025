@@ -10,5 +10,11 @@
         "quiz": 0,
         "teach_back": 0,
         "last_updated": "2025-11-25T18:18:56.538433"
+    },
+    "neural_networks": {
+        "learn": 2,
+        "quiz": 1,
+        "teach_back": 1,
+        "last_updated": "2025-11-25T19:24:17.262812"
     }
 }
