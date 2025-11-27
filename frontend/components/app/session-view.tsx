@@ -118,9 +118,7 @@ export const SessionView = ({
 
 
       {/* Lead Summary */}
-      <div className="ml-4 mt-4 w-100 flex justify-center">
-        <LeadSummaryCard />
-      </div>
+     
 
 
 

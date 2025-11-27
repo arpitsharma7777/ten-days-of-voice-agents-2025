@@ -1,0 +1,47 @@
+[
+    {
+        "userName": "John",
+        "securityIdentifier": "A102",
+        "securityQuestion": "What is your favorite color?",
+        "securityAnswer": "blue",
+        "cardEnding": "4242",
+        "transactionAmount": "$189.99",
+        "transactionName": "ABC Industries",
+        "transactionTime": "2025-02-11 14:10",
+        "transactionLocation": "New Delhi",
+        "transactionCategory": "e-commerce",
+        "transactionSource": "alibaba.com",
+        "status": "confirmed_safe",
+        "notes": "Customer confirmed transaction as legitimate."
+    },
+    {
+        "userName": "Sarah",
+        "securityIdentifier": "B230",
+        "securityQuestion": "What city were you born in?",
+        "securityAnswer": "mumbai",
+        "cardEnding": "1189",
+        "transactionAmount": "$72.45",
+        "transactionName": "FlipKart Retail",
+        "transactionTime": "2025-02-10 19:33",
+        "transactionLocation": "Mumbai",
+        "transactionCategory": "shopping",
+        "transactionSource": "flipkart.com",
+        "status": "verification_failed",
+        "notes": "Identity verification failed."
+    },
+    {
+        "userName": "Ravi",
+        "securityIdentifier": "C991",
+        "securityQuestion": "What is your pet's name?",
+        "securityAnswer": "tiger",
+        "cardEnding": "9988",
+        "transactionAmount": "₹9,499",
+        "transactionName": "Myntra Fashion",
+        "transactionTime": "2025-02-09 11:02",
+        "transactionLocation": "Bangalore",
+        "transactionCategory": "fashion",
+        "transactionSource": "myntra.com",
+        "status": "verification_failed",
+        "notes": "Identity verification failed."
+    }
+]
