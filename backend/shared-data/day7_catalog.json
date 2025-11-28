@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": "Whole Wheat Bread",
+    "category": "Groceries",
+    "price": 40,
+    "tags": ["bread", "whole_wheat"]
+  },
+  {
+    "id": 2,
+    "name": "Eggs (12 pack)",
+    "category": "Groceries",
+    "price": 75,
+    "tags": ["eggs"]
+  },
+  {
+    "id": 3,
+    "name": "Milk 1L",
+    "category": "Groceries",
+    "price": 60,
+    "tags": ["milk", "dairy"]
+  },
+  {
+    "id": 4,
+    "name": "Peanut Butter 500g",
+    "category": "Groceries",
+    "price": 180,
+    "tags": ["spread", "peanut_butter"]
+  },
+  {
+    "id": 5,
+    "name": "Pasta 1kg",
+    "category": "Groceries",
+    "price": 120,
+    "tags": ["pasta"]
+  },
+  {
+    "id": 6,
+    "name": "Pasta Sauce Jar",
+    "category": "Groceries",
+    "price": 140,
+    "tags": ["sauce"]
+  },
+  {
+    "id": 7,
+    "name": "Margherita Pizza",
+    "category": "Prepared Food",
+    "price": 250,
+    "tags": ["pizza", "veg"]
+  },
+  {
+    "id": 8,
+    "name": "Chicken Sandwich",
+    "category": "Prepared Food",
+    "price": 180,
+    "tags": ["nonveg", "sandwich"]
+  },
+  {
+    "id": 9,
+    "name": "Veg Burger",
+    "category": "Prepared Food",
+    "price": 120,
+    "tags": ["veg", "burger"]
+  },
+  {
+    "id": 10,
+    "name": "Chips (Large Pack)",
+    "category": "Snacks",
+    "price": 50,
+    "tags": ["chips", "snack"]
+  },
+  {
+    "id": 11,
+    "name": "Tomatoes 1kg",
+    "category": "Groceries",
+    "price": 30,
+    "tags": ["vegetable"]
+  },
+  {
+    "id": 12,
+    "name": "Onions 1kg",
+    "category": "Groceries",
+    "price": 40,
+    "tags": ["vegetable"]
+  },
+  {
+    "id": 13,
+    "name": "Cheese Slices 10pc",
+    "category": "Groceries",
+    "price": 90,
+    "tags": ["cheese"]
+  },
+  {
+    "id": 14,
+    "name": "Butter 500g",
+    "category": "Groceries",
+    "price": 120,
+    "tags": ["butter", "dairy"]
+  },
+  {
+    "id": 15,
+    "name": "Instant Noodles Pack",
+    "category": "Snacks",
+    "price": 20,
+    "tags": ["noodles"]
+  },
+  {
+    "id": 16,
+    "name": "Coffee Powder 200g",
+    "category": "Groceries",
+    "price": 150,
+    "tags": ["coffee"]
+  },
+  {
+    "id": 17,
+    "name": "Bananas (6 pc)",
+    "category": "Fruits",
+    "price": 50,
+    "tags": ["fruits"]
+  },
+  {
+    "id": 18,
+    "name": "Apples 1kg",
+    "category": "Fruits",
+    "price": 120,
+    "tags": ["fruits"]
+  },
+  {
+    "id": 19,
+    "name": "Orange Juice 1L",
+    "category": "Groceries",
+    "price": 110,
+    "tags": ["juice"]
+  },
+  {
+    "id": 20,
+    "name": "Chocolate Cookies Pack",
+    "category": "Snacks",
+    "price": 80,
+    "tags": ["cookies"]
+  }
+]

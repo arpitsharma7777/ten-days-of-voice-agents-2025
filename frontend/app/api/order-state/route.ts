@@ -4,10 +4,10 @@ import path from "path";
 
 export async function GET() {
   try {
-    // backend/orders folder तक path लो
+    // backend/orders folder 
     const ordersDir = path.join(process.cwd(), "..", "backend", "orders");
 
-    // JSON files पढ़ो
+    // JSON files 
     const files = fs.readdirSync(ordersDir)
       .filter(f => f.endsWith(".json"))
       .sort()

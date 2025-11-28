@@ -18,6 +18,8 @@ import { ScrollArea } from '../livekit/scroll-area/scroll-area';
 import { WellnessVisualizer } from "@/components/app/wellness-visualizer";
 import { TutorProgress } from "@/components/app/tutor-progress";
 import { LeadSummaryCard } from "./lead-summary-card";
+import { OrderSummary } from "@/components/app/order-summary";
+
 
 
 

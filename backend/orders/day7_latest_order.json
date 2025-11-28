@@ -1,0 +1,40 @@
+{
+    "timestamp": "2025-11-28T19:19:04.457455",
+    "customer_name": "Arpit",
+    "address": "Not provided",
+    "items": [
+        {
+            "id": 3,
+            "name": "Milk 1L",
+            "category": "Groceries",
+            "price": 60.0,
+            "quantity": 2,
+            "line_total": 120.0
+        },
+        {
+            "id": 2,
+            "name": "Eggs (12 pack)",
+            "category": "Groceries",
+            "price": 75.0,
+            "quantity": 1,
+            "line_total": 75.0
+        },
+        {
+            "id": 1,
+            "name": "Whole Wheat Bread",
+            "category": "Groceries",
+            "price": 40.0,
+            "quantity": 1,
+            "line_total": 40.0
+        },
+        {
+            "id": 4,
+            "name": "Peanut Butter 500g",
+            "category": "Groceries",
+            "price": 180.0,
+            "quantity": 1,
+            "line_total": 180.0
+        }
+    ],
+    "total": 415.0
+}
