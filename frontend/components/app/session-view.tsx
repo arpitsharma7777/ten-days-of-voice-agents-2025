@@ -15,12 +15,8 @@ import { useConnectionTimeout } from '@/hooks/useConnectionTimout';
 import { useDebugMode } from '@/hooks/useDebug';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../livekit/scroll-area/scroll-area';
-import { WellnessVisualizer } from "@/components/app/wellness-visualizer";
-import { TutorProgress } from "@/components/app/tutor-progress";
+
 import { LeadSummaryCard } from "./lead-summary-card";
-import { OrderSummary } from "@/components/app/order-summary";
-
-
 
 
 const MotionBottom = motion.create('div');
@@ -116,13 +112,6 @@ export const SessionView = ({
 
       {/* Tile Layout */}
       <TileLayout chatOpen={chatOpen} />
-
-
-
-      {/* Lead Summary */}
-     
-
-
 
 
       {/* Bottom */}
